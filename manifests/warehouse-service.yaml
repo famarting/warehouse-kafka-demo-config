@@ -12,10 +12,12 @@ spec:
   selector:
     matchLabels:
       app: warehouse-service
+      system: warehouse
   template:
     metadata:
       labels:
         app: warehouse-service
+        system: warehouse
     spec:
       serviceAccount: warehouse
       containers:

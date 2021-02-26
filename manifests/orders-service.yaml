@@ -12,10 +12,12 @@ spec:
   selector:
     matchLabels:
       app: orders-service
+      system: warehouse
   template:
     metadata:
       labels:
         app: orders-service
+        system: warehouse
     spec:
       containers:
       - image: quay.io/famargon/orders-service-kafka:latest
