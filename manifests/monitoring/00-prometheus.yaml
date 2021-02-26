@@ -1,0 +1,91 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  name: warehouse-prometheus
+  namespace: warehouse-monitoring
+  labels:
+    app: warehouse-monitoring
+    system: warehouse
+spec:
+  serviceAccountName: prometheus-sa
+  serviceMonitorSelector:
+    matchLabels:
+      system: warehouse
+  # serviceMonitorNamespaceSelector:
+  #   matchLabels:
+  #     system: warehouse
+  alerting:
+    alertmanagers:
+      - name: alertmanager-main
+        namespace: monitoring
+        port: web
+  enableAdminAPI: true
+  securityContext: {}
+  replicas: 2
+  # ruleSelector:
+  #   matchLabels:
+  #     system: warehouse
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: warehouse-prometheus
+  namespace: warehouse-monitoring
+  labels:
+    app: warehouse-monitoring
+    system: warehouse
+spec:
+  path: /
+  to:
+    kind: Service
+    name: prometheus-operated
+    weight: 100
+  port:
+    targetPort: web
+  wildcardPolicy: None
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: prometheus-sa
+  namespace: warehouse-monitoring
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: prometheus-cl
+  namespace: warehouse-monitoring
+  labels:
+    app: warehouse-monitoring
+    system: warehouse
+rules:
+- apiGroups: [""]
+  resources:
+  - nodes
+  - services
+  - endpoints
+  - pods
+  verbs: ["get", "list", "watch"]
+- apiGroups: [""]
+  resources:
+  - configmaps
+  verbs: ["get"]
+- nonResourceURLs: ["/metrics"]
+  verbs: ["get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: prometheus-clb
+  namespace: warehouse-monitoring
+  labels:
+    app: warehouse-monitoring
+    system: warehouse
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: prometheus-cl
+subjects:
+- kind: ServiceAccount
+  name: prometheus-sa
+  namespace: warehouse-monitoring

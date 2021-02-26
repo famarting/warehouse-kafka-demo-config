@@ -1,0 +1,21 @@
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDataSource
+metadata:
+  name: grafana-datasource
+  namespace: warehouse-monitoring
+  labels:
+    name: grafana-datasource
+    app: warehouse-monitoring
+    system: warehouse
+spec:
+  datasources:
+    - access: proxy
+      editable: true
+      isDefault: true
+      jsonData:
+        timeInterval: 5s
+        tlsSkipVerify: true
+      name: Prometheus
+      type: prometheus
+      url: 'http://prometheus-operated.warehouse-monitoring.svc.cluster.local:9090'
+  name: prometheus-grafanadatasource.yaml
