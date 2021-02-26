@@ -19,6 +19,8 @@ spec:
     path: manifests
     repoURL: https://github.com/famartinrh/warehouse-kafka-demo-config
     targetRevision: HEAD
+    directory:
+      recurse: true
   syncPolicy:
     automated:
       prune: true

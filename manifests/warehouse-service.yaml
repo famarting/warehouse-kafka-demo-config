@@ -8,8 +8,7 @@ metadata:
   name: warehouse-service
   namespace: warehouse
 spec:
-  # replicas: ${REPLICAS}
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: warehouse-service
