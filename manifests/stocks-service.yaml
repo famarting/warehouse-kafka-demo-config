@@ -4,6 +4,7 @@ kind: Deployment
 metadata:
   labels:
     app: stocks-service
+    system: warehouse
   name: stocks-service
   namespace: warehouse
 spec:
@@ -60,6 +61,7 @@ kind: Service
 metadata:
   labels:
     app: stocks-service
+    system: warehouse
   name: stocks-service
   namespace: warehouse
 spec:

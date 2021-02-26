@@ -4,6 +4,7 @@ kind: Deployment
 metadata:
   labels:
     app: warehouse-service
+    system: warehouse
   name: warehouse-service
   namespace: warehouse
 spec:
@@ -53,6 +54,7 @@ kind: Service
 metadata:
   labels:
     app: warehouse-service
+    system: warehouse
   name: warehouse-service
   namespace: warehouse
 spec:
@@ -70,6 +72,7 @@ kind: Route
 metadata:
   labels:
     app: warehouse-service
+    system: warehouse
   name: warehouse-service
   namespace: warehouse
 spec:
